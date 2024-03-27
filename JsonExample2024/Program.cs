@@ -44,7 +44,7 @@ namespace JsonExample2024
 Final Grade:{sub.FinalGrade}");
             }
         }
-
+        
         
 
        
@@ -87,41 +87,43 @@ Final Grade:{sub.FinalGrade}");
 Final Grade:{sub.FinalGrade}");
             }
         }
-        static void Main(string[] args)
+
+        public static void MonkeysJson(Monkey monkey)
         {
-           
-            Student student = new Student() { BirthDate = new DateTime(2005, 12, 21), Id=1, Name = "Kuku Kaka" };
-            student.Subjects.Add(new Subject() { Id = 1, Name = "History", FinalGrade = 100 });
-
-           string jsonStr1= BasicSerializtionExmaple(student);
-            Console.WriteLine("---------------------");
-           
-            string jsonStr2=SerializeWithOptions(student);
-            Console.WriteLine("---------------------");
-            BasicDeserializtion(jsonStr1);
-            Console.WriteLine("---------------------");
-
+            string str = JsonSerializer.Serialize(monkey);
+            ReturnMonkey(str);
             
 
-            BasicDeserializtion(jsonStr2);
-            Console.WriteLine("---------------------");
-           
-            
-            jsonStr2 = @"{
-    ""id"": 1,
-    ""Name"": ""Kuku Kaka"",
-    ""BirthDate"": ""2005-12-21T00:00:00"",
-    ""Wow"":""this is sample to show JsonProperty""
-}";
-            DeserializtionWithOptions(jsonStr2);
-            Console.WriteLine("---------------------");
-            DeserializationWithPropertyNaming(jsonStr2);
-
-        
-           
+        }
+        public static Monkey ReturnMonkey(string str)
+        {
+            return JsonSerializer.Deserialize<Monkey>(str);
         }
 
-    
 
+
+
+
+
+
+
+
+
+        static void Main(string[] args)
+        {
+           MonkeyList monkeyList = new MonkeyList();
+           
+            
+
+            string text = File.ReadAllText(@"../../../monkeydata.json");
+            CreateMonkeylist(monkeyList, text);
+            
+        }
+
+        private static void CreateMonkeylist(MonkeyList monkeyList, string text)
+        {
+            List<Monkey> m=JsonSerializer.Deserialize<List<Monkey>>(text);
+            monkeyList.Monkeys = m;
+        }
     }
 }
